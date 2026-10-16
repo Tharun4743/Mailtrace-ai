@@ -30,6 +30,20 @@ Mailtrace AI is an automated email forensic investigation platform. It parses ra
 ---
 
 ## 4. ⚙️ Technical Approach & System Architecture
+
+### 📐 High-Level Architectural Flowchart:
+```mermaid
+graph TD
+    Email["Inbound Email Message (Raw RFC 5322 EML / MSG)"] -->|RFC Header Stream| Ingestion["Email Parser & Forensic Deconstructor"]
+    Ingestion --> AuthCheck["SPF, DKIM & DMARC Cryptographic Validator"]
+    Ingestion --> DomainIntel["DNS MX & WHOIS Lookups"]
+    Ingestion --> ContentNLP["NLP Phishing Intent & Urgency Heuristics"]
+    AuthCheck --> ScoreEngine["Multifactor Threat Scoring Matrix"]
+    DomainIntel --> ScoreEngine
+    ContentNLP --> ScoreEngine
+    ScoreEngine --> Report["Interactive Threat Forensics Dossier & Verdict"]
+```
+
 | Security Pipeline | Forensic Component | Detection Logic |
 | :--- | :--- | :--- |
 | **MIME Parsing** | Python `email` module | Extracts Received hop IP addresses, Message-IDs, and sender headers |
